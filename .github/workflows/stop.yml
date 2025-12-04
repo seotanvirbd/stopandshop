@@ -28,4 +28,4 @@ jobs:
       # Step 4: Run your Python script
       - name: Run Script
         run: |
-          python stopandshop.py
+          python s.py
