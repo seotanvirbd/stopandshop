@@ -30,7 +30,7 @@ jobs:
         
     - name: Run test script
       run: |
-        s.py  # Change this to your actual file name
+        python s.py  # <-- CHANGE THIS to your actual file name
         
     - name: Upload screenshots
       uses: actions/upload-artifact@v3
