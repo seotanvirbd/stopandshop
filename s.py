@@ -1,13 +1,17 @@
 """Test Stop & Shop search. Non-US IPs might be blocked."""
 from seleniumbase import SB
+import datetime
 
 with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://stopandshop.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.6)
-    # Take initial screenshot
-    sb.save_screenshot("stopandshop_homepage.png")
-    print("screenshot: stopandshop_homepage.png")
+    # Create timestamp for unique filenames
+    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+    
+    # 1. Full page screenshot
+    sb.save_screenshot(f"stopandshop_homepage_{timestamp}.png")
+    print(f"screenshot: stopandshop_homepage_{timestamp}.png")
     if not sb.is_element_present("#brand-logo_link"):
         sb.refresh()
         sb.sleep(2.6)

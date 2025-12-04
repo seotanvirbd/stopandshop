@@ -1,31 +1,39 @@
-name: Run StopAndShop Bot
+name: Run Web Test
 
 on:
-  workflow_dispatch   # Run manually from GitHub
+  workflow_dispatch:  # Only run when you manually click "Run workflow"
 
 jobs:
-  run-bot:
-    runs-on: ubuntu-latest
-
+  test:
+    runs-on: ubuntu-latest  # Uses a free Linux machine
+    
     steps:
-      # Step 1: Get your code from GitHub
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # Step 2: Install Python
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      # Step 3: Install required package
-      - name: Install SeleniumBase
-        run: |
-          python -m pip install --upgrade pip
-          pip install seleniumbase
-          python -m seleniumbase install chromedriver
-
-      # Step 4: Run your Python script
-      - name: Run Script
-        run: |
-          python s.py
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install Chrome
+      run: |
+        sudo apt-get update
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+        
+    - name: Install Python packages
+      run: |
+        pip install seleniumbase
+        
+    - name: Run test script
+      run: |
+        s.py  # Change this to your actual file name
+        
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-screenshots
+        path: "*.png"
