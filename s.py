@@ -5,6 +5,8 @@ with SB(uc=True, test=True, ad_block=True) as sb:
     url = "https://stopandshop.com/"
     sb.activate_cdp_mode(url)
     sb.sleep(2.6)
+    # Take initial screenshot
+    sb.save_screenshot("stopandshop_homepage.png")
     if not sb.is_element_present("#brand-logo_link"):
         sb.refresh()
         sb.sleep(2.6)
