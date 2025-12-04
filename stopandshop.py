@@ -5,24 +5,22 @@ import time
 with SB(
     uc=True,
     test=True,
-    ad_block=True,
-    screenshots=True,
-    save_screenshots=True
+    ad_block=True
 ) as sb:
 
     url = "https://stopandshop.com/"
     sb.activate_cdp_mode(url)
 
-    sb.sleep(6)  # ✅ extra wait for slow CI
+    sb.sleep(6)  # Extra wait for GitHub cloud
 
-    # ✅ Safe element check (no crash)
+    # Safe logo check
     if not sb.is_element_present("#brand-logo_link", timeout=10):
-        print("❌ Logo not found yet — refreshing page...")
+        print("❌ Logo not found yet — refreshing...")
         sb.refresh()
         sb.sleep(6)
 
-    # ✅ Final safe wait
-    sb.wait_for_element("input[type='search']", timeout=20)
+    # Safe final wait for search box
+    sb.wait_for_element("input[type='search']", timeout=25)
 
     query = "Fresh Turkey"
     required_text = "Turkey"
@@ -43,7 +41,7 @@ with SB(
     unique_item_text = []
     item_selector = "div.product-tile_content"
 
-    sb.wait_for_element(item_selector, timeout=20)
+    sb.wait_for_element(item_selector, timeout=25)
     items = sb.find_elements(item_selector)
 
     for item in items:
@@ -54,5 +52,5 @@ with SB(
                     unique_item_text.append(item.text)
                     print("* " + item.text)
 
-    # ✅ Always save final screenshot
+    # ✅ Manual screenshot (always supported)
     sb.save_screenshot("final_results.png")
